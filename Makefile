@@ -1,15 +1,17 @@
-NAME = pipex
-BONUS = pipexb
+NAME        = pipex
+BONUS       = pipexb
+SRCDIR      = src
+INCDIR      = includes
 
-SRC = cmds.c files.c main.c utils.c
-OBJ = $(SRC:%.c=%.o)
+SRC         = cmds.c files.c main.c utils.c
+OBJ         = $(addprefix $(SRCDIR)/, $(SRC:%.c=%.o))
 
-BONUS_SRC = bonus.c cmds.c files.c utils.c
-BONUS_OBJ = $(BONUS_SRC:%.c=%.o)
+BONUS_SRC   = bonus.c cmds.c files.c utils.c
+BONUS_OBJ   = $(addprefix $(SRCDIR)/, $(BONUS_SRC:%.c=%.o))
 
-CC = cc -Wall -Werror -Wextra
-INC = -I ./
-RM = rm -rf
+CC          = cc -Wall -Werror -Wextra
+INC         = -I $(INCDIR) -Ilibft
+RM          = rm -rf
 
 all: $(NAME)
 
@@ -26,8 +28,8 @@ $(BONUS): $(BONUS_OBJ)
 	$(CC) $^ -Llibft -lft -o $(BONUS)
 	@echo "Bonus compiled"
 
-%.o: %.c
-	$(CC) $(INC) -Ilibft -c $< -o $@
+$(SRCDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(INC) -c $< -o $@
 
 bonus: $(BONUS)
 
